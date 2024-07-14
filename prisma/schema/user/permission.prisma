@@ -1,0 +1,15 @@
+model permission {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique @db.VarChar(50)
+  ruleCode        RuleCode         @default(VIEW) @map("rule_code") /// 当前菜单的权限码   VIEW、EDIT、ALL
+  menu            menu             @relation(fields: [menuId], references: [id])
+  menuId          Int              @map("menu_id")
+  status          Status?          @default(INACTIVE) ///是否启用该条权限
+  isSystem        Boolean?         @default(false)
+  rolePermissions rolePermission[]
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@index([menuId])
+  @@map("permissions")
+}
